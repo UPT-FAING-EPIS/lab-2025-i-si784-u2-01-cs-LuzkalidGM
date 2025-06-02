@@ -1,0 +1,45 @@
+name: Publish Coverage Report
+
+on:
+  push:
+    branches: [main]  # Cambia si tu rama principal se llama diferente
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Ejecutar pruebas con cobertura
+        run: |
+          dotnet test Math.Tests/Math.Tests.csproj \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutput=../Cobertura/coverage.xml
+
+      - name: Instalar ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generar reporte HTML
+        run: |
+          reportgenerator \
+            -reports:./Cobertura/coverage.xml \
+            -targetdir:./Cobertura/report \
+            -reporttypes:Html
+
+      - name: Publicar reporte en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Cobertura/report
+          destination_dir: cobertura
