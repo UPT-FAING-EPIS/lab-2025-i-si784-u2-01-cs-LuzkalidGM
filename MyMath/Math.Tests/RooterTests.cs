@@ -1,3 +1,4 @@
+using System;
 using Math.Lib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +20,8 @@ namespace Math.Tests
             double actualResult = rooter.SquareRoot(input);
             Assert.AreEqual(expectedResult, actualResult, delta: expectedResult / 1000);
         }
-                [TestMethod]
+        
+        [TestMethod]
         public void RooterTestNegativeInputx()
         {
             Rooter rooter = new Rooter();
@@ -33,5 +35,30 @@ namespace Math.Tests
             }
             Assert.Fail();
         }
+        
+        [TestMethod]
+        public void RooterThrowsExceptionWithCorrectMessage()
+        {
+            var rooter = new Rooter();
+
+            try
+            {
+                rooter.SquareRoot(-10);
+                Assert.Fail("No se lanzó la excepción esperada.");
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // Verifico que el mensaje comience con la cadena deseada:
+                string mensajeEsperado = "El valor ingresado es invalido, solo se puede ingresar números positivos";
+                Assert.IsTrue(
+                    ex.Message.StartsWith(mensajeEsperado, StringComparison.Ordinal),
+                    $"Se esperaba que Message empezara con:\n  {mensajeEsperado}\npero fue:\n  {ex.Message}"
+                );
+                
+                // Opcionalmente, también podrías verificar ex.ParamName:
+                Assert.AreEqual("input", ex.ParamName);
+            }
+        }
+
     }
 }
