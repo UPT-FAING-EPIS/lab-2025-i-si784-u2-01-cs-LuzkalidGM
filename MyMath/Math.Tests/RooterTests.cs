@@ -59,6 +59,23 @@ namespace Math.Tests
                 Assert.AreEqual("input", ex.ParamName);
             }
         }
+        [TestMethod]
+        public void SqrtOfNineIsThree()
+        {
+            Rooter rooter = new Rooter();
+            double result = rooter.SquareRoot(9.0);
+            Assert.AreEqual(3.0, result, 0.001);
+        }
+
+        [TestMethod]
+        public void SqrtOfZeroIsZero()
+        {
+            Rooter rooter = new Rooter();
+            double result = rooter.SquareRoot(0.0);
+            Assert.AreEqual(0.0, result, 0.001);
+        }
+
+
 
     }
 }
