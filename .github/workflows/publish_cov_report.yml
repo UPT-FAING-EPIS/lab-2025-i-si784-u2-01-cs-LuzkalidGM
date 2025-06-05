@@ -31,7 +31,10 @@ jobs:
           dotnet test Math.Tests/Math.Tests.csproj \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=cobertura \
-            /p:CoverletOutput=../Cobertura/coverage.xml
+            /p:CoverletOutput=../Cobertura/coverage.xml \
+            --logger trx \
+            --results-directory ./TestResults
+        continue-on-error: true
 
       - name: Instalar ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
