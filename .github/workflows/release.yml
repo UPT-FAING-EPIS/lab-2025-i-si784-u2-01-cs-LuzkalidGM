@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NUGET_VERSION: 1.0.0-2021123456
+      NUGET_VERSION: 1.0.0-2022074263
       PROJECT_PATH: Math.Lib/Math.Lib.csproj
 
     steps:
