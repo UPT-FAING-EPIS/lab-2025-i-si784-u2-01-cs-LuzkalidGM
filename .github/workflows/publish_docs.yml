@@ -23,15 +23,17 @@ jobs:
       - name: Restore and build metadata
         run: |
           export PATH="$PATH:~/.dotnet/tools"
+          cd MyMath
           docfx metadata
 
       - name: Build documentation
         run: |
           export PATH="$PATH:~/.dotnet/tools"
+          cd MyMath
           docfx build
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          publish_dir: ./MyMath/_site
