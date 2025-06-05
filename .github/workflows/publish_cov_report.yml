@@ -17,11 +17,17 @@ jobs:
         with:
           dotnet-version: 8.x
 
+      - name: Cambiar al directorio del proyecto
+        run: cd MyMath
+
       - name: Restaurar dependencias
-        run: dotnet restore
+        run: |
+          cd MyMath
+          dotnet restore
 
       - name: Ejecutar pruebas con cobertura
         run: |
+          cd MyMath
           dotnet test Math.Tests/Math.Tests.csproj \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=cobertura \
@@ -32,6 +38,7 @@ jobs:
 
       - name: Generar reporte HTML
         run: |
+          cd MyMath
           reportgenerator \
             -reports:./Cobertura/coverage.xml \
             -targetdir:./Cobertura/report \
@@ -41,5 +48,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Cobertura/report
+          publish_dir: ./MyMath/Cobertura/report
           destination_dir: cobertura
